@@ -1,16 +1,17 @@
 <?php
-return array(
+
+return [
     'name'        => 'MauticRebrandingBundle',
     'description' => 'Allows for site rebranding',
-    'version'     => '1.0.0',
-    'author'      => 'riadims',
+    'version'     => '1.0',
+    'author'      => 'Mautic Community',
     'routes'      => [
-        'main' => array(
+        'main' => [
             'mautic_rebranding_index' => [
                 'path'       => '/rebranding',
-                'controller' => 'MauticRebrandingBundle:Rebranding:indexAction',
+                'controller' => 'MauticRebrandingBundle:Rebranding:index',
             ],
-        ),
+        ],
     ],
     'services' => [
         'events' => [
@@ -20,4 +21,4 @@ return array(
             ],
         ],
     ],
-);
+];
