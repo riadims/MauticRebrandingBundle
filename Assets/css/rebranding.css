@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+.btn-primary{
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-nospin{
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-secondary {
+    border-color: var(--primary-color) !important;
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-icon {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.panel-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.btn-apply{
+    background-color: var(--primary-color) !important;
+}
+
+.btn.btn-primary.btn-save.btn-copy{
+    border-color: var(--primary-color) !important;
+}
+
+
+.panel-heading {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn.btn-primary:hover, .btn.btn-primary:focus {
+    background-color: var(--primary-color-hover) !important;
+    border-color: var(--primary-color-hover) !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.label-primary {
+    color: var(--primary-color) !important;
+}
+
+.mautic-brand span {
+    font-family: 'Open Sans', sans-serif; 
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--primary-color, #4E5E9E);
+}

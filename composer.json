@@ -1,17 +1,14 @@
 {
-    "name": "mautic/mautic-rebranding-bundle",
-    "description": "Mautic Rebranding Plugin",
+    "name": "riadims/mautic-rebranding-bundle",
     "type": "mautic-plugin",
-      "keywords": [
-          "mautic",
-          "plugin",
-          "integration"
-      ],
-      "extra": {
-          "install-directory-name": "MauticRebrandingBundle"
-      },
-      "minimum-stability": "dev",
-      "require": {
-          "mautic/core-lib": "^5.0"
-      }
-  }
+    "description": "A test plugin for customizing Mautic branding",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "MauticPlugin\\RebrandingBundle\\": ""
+        }
+    }
+}

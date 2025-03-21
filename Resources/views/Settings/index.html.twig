@@ -1,0 +1,30 @@
+{% block content %}
+<div class="content-body container-fluid s-dashboard">
+    <div class="page-header">
+        <h1>Rebranding Settings</h1>
+    </div>
+
+    <div class="box box-primary">
+        <div class="box-body">
+            <form id="rebranding-form" method="POST" action="{{ path('rebranding_save') }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="brand_name">Brand Name</label>
+                    <input type="text" class="form-control" id="brand_name" name="brand_name" placeholder="Enter brand name">
+                </div>
+
+                <div class="form-group">
+                    <label for="logo">Upload Logo</label>
+                    <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label for="primary_color">Primary Color</label>
+                    <input type="color" id="color_picker" class="form-control" name="primary_color">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
