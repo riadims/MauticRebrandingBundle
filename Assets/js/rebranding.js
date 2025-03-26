@@ -1,98 +1,85 @@
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('/plugins/RebrandingBundle/Config/config.json')
-        .then(response => response.json())
-        .then(config => {
-            const mauticBrand = document.querySelector('.mautic-brand');
-            if (mauticBrand) {
-                const existingLogo = mauticBrand.querySelector('.mautic-logo-figure');
-                const existingText = mauticBrand.querySelector('.mautic-logo-text');
-                if (existingLogo) existingLogo.remove();
-                if (existingText) existingText.remove();
-
-                if (config.logo) {
-                    const customLogo = document.createElement('img');
-                    customLogo.src = config.logo;
-                    customLogo.alt = config.brand_name || 'Logo';
-                    customLogo.style.height = '30px';
-                    customLogo.style.marginRight = '5px';
-                    mauticBrand.prepend(customLogo);
-                }
-
-                if (config.brand_name) {
-                    const customText = document.createElement('span');
-                    customText.textContent = config.brand_name;
-                    customText.style.fontFamily = 'Open Sans, sans-serif';
-                    customText.style.fontSize = '22px';
-                    customText.style.fontWeight = 'bold';
-                    customText.style.color = config.primary_color || '#4E5E9E';
-                    mauticBrand.appendChild(customText);
-                }
-
-                const loginLogoContainer = document.querySelector('.mautic-logo');
-                if (loginLogoContainer) {
-                    const existingLoginLogo = loginLogoContainer.querySelector('.mautic-logo-figure');
-                    if (existingLoginLogo) existingLoginLogo.remove();
-
-                    if (config.logo) {
-                        const customLoginLogo = document.createElement('img');
-                        customLoginLogo.src = config.logo;
-                        customLoginLogo.alt = config.brand_name || 'Logo';
-                        loginLogoContainer.prepend(customLoginLogo);
-                    }
-                }
-            }
-
-            if (config.primary_color) {
-                document.documentElement.style.setProperty('--primary-color', config.primary_color);
-                document.documentElement.style.setProperty('--primary-color-hover', config.primary_color + 'CC');
-
-                const primaryButtons = document.querySelectorAll('.btn-primary');
-                primaryButtons.forEach(button => {
-                    button.style.backgroundColor = config.primary_color;
-                    button.style.borderColor = config.primary_color;
-                });
-
-                const primaryText = document.querySelectorAll('.text-primary');
-                primaryText.forEach(text => {
-                    text.style.color = config.primary_color;
-                });
-            }
+document.addEventListener('DOMContentLoaded', function() {
+    cleanUpBranding();
+    
+    fetch('/plugins/RebrandingBundle/Config/config.json?t=' + Date.now())
+        .then(response => {
+            if (!response.ok) throw new Error('Config not found');
+            return response.json();
         })
-        .catch(error => console.error('Error loading rebranding config:', error));
+        .then(config => {
+            applyHeaderBranding(config);
+            
+            applyLoginBranding(config);
+        })
+        .catch(error => {
+            console.log('No rebranding config found, using default branding.');
+            restoreDefaultBranding();
+        });
 
-    const revertButton = document.getElementById('revert-to-default');
-    if (revertButton) {
-        revertButton.addEventListener('click', function (event) {
-            event.preventDefault();
-            if (confirm('Are you sure you want to revert to the default Mautic UI settings?')) {
-                fetch('/rebranding/revert', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            alert('Reverted to default settings successfully.');
-                            window.location.href = '/s/rebranding';
-                        } else {
-                            alert('Failed to revert to default settings: ' + (data.message || 'Unknown error'));
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred while reverting to default settings.');
-                    });
+        document.getElementById('revert-to-default')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            if (confirm('Are you sure you want to revert to default Mautic branding?')) {
+                window.location.href = '/s/rebranding/revert';
             }
         });
-    } else {
-        console.error('Revert button not found.');
-    }
 });
+
+function cleanUpBranding() {
+    document.querySelectorAll('.rebranding-logo, .rebranding-text, .rebranding-login-logo').forEach(el => el.remove());
+    
+    const defaultLogo = document.querySelector('.mautic-logo-figure');
+    const defaultText = document.querySelector('.mautic-logo-text');
+    if (defaultLogo) defaultLogo.style.display = '';
+    if (defaultText) defaultText.style.display = '';
+}
+
+function applyHeaderBranding(config) {
+    const mauticBrand = document.querySelector('.mautic-brand');
+    if (!mauticBrand) return;
+
+    const defaultLogo = mauticBrand.querySelector('.mautic-logo-figure');
+    const defaultText = mauticBrand.querySelector('.mautic-logo-text');
+    if (defaultLogo) defaultLogo.style.display = 'none';
+    if (defaultText) defaultText.style.display = 'none';
+
+    if (config.logo) {
+        const customLogo = document.createElement('img');
+        customLogo.src = config.logo + '?t=' + Date.now();
+        customLogo.alt = config.brand_name || 'Logo';
+        customLogo.className = 'rebranding-logo';
+        customLogo.style.cssText = 'height:30px; margin-right:5px;';
+        mauticBrand.prepend(customLogo);
+    }
+
+    if (config.brand_name) {
+        const customText = document.createElement('span');
+        customText.textContent = config.brand_name;
+        customText.className = 'rebranding-text text-primary';
+        customText.style.cssText = `
+            font-family: 'Open Sans', sans-serif;
+            font-size: 22px;
+            font-weight: bold;
+            display: inline-block;
+            vertical-align: middle;
+        `;
+        mauticBrand.appendChild(customText);
+    }
+}
+
+function applyLoginBranding(config) {
+    const loginContainer = document.querySelector('.mautic-logo');
+    if (!loginContainer) return;
+
+    const defaultLoginLogo = loginContainer.querySelector('.mautic-logo-figure');
+    if (defaultLoginLogo) defaultLoginLogo.style.display = 'none';
+
+    if (config.logo) {
+        const customLoginLogo = document.createElement('img');
+        customLoginLogo.src = config.logo + '?t=' + Date.now();
+        customLoginLogo.alt = config.brand_name || 'Logo';
+        customLoginLogo.className = 'rebranding-login-logo';
+        customLoginLogo.style.cssText = 'height:150px; border-radius:50%;';
+        loginContainer.prepend(customLoginLogo);
+    }
+}

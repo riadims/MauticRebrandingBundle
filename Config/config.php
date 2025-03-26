@@ -5,6 +5,7 @@ return [
     'description' => 'A plugin to customize Mautic branding.',
     'author'      => 'riadims',
     'version'     => '1.0.0',
+    'icon'        => 'MauticPlugin/RebrandingBundle/Assets/PluginIcons/icon.webp',
     
     'routes' => [
         'main' => [
