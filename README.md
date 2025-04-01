@@ -4,7 +4,8 @@ Mautic plugin for rebranding.
 
 ## Features
 - Change the logo and brand name displayed in the upper-left corner of the Mautic interface.
-- Update the logo on the login page (in progress).
+- Update the logo on the login page.
+- Update element colors.
 - Revert to the original Mautic branding if needed.
 
 ## Compatibility

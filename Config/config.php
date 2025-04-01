@@ -5,51 +5,50 @@ return [
     'description' => 'A plugin to customize Mautic branding.',
     'author'      => 'riadims',
     'version'     => '1.0.0',
-    'icon'        => 'MauticPlugin/RebrandingBundle/Assets/PluginIcons/icon.webp',
-    
+    'icon'        => 'plugins/RebrandingBundle/Resources/images/icon.webp',
+
     'routes' => [
         'main' => [
             'rebranding' => [
-                'path'       => '/rebranding',
+                'path'       => '/s/rebranding',
                 'controller' => 'MauticPlugin\RebrandingBundle\Controller\SettingsController::viewAction',
             ],
             'rebranding_save' => [
-                'path'       => '/rebranding/save',
+                'path'       => '/s/rebranding/save',
                 'controller' => 'MauticPlugin\RebrandingBundle\Controller\SettingsController::saveAction',
                 'methods'    => ['POST'],
             ],
             'rebranding_revert' => [
-            'path'       => '/rebranding/revert',
-            'controller' => 'MauticPlugin\RebrandingBundle\Controller\SettingsController::revertAction',
-            'methods'    => ['POST'],
+                'path'       => '/rebranding/revert',
+                'controller' => 'MauticPlugin\RebrandingBundle\Controller\SettingsController::revertAction',
+                'methods'    => ['POST'],
             ],
         ],
     ],
 
     'menu' => [
-        'main' => [
-            'rebranding' => [
-                'id'        => 'rebranding_menu',
-                'iconClass' => 'fa-paint-brush',
-                'route'     => 'rebranding',
-                'label'     => 'Rebranding Settings',
-                'priority'  => 0,
-                'linkAttributes' => [
-                    'data-toggle' => 'ajax',
-                    'href'        => '/s/rebranding',
-                ],
-            ],
-        ],
+        'admin' => [
+            'priority' => 100,
+            'items'    => [
+                'Rebranding' => [
+                    'id'        => 'rebranding_settings',
+                    'route'     => 'rebranding',
+                    'access'    => 'admin',
+                    'iconClass' => 'fa fa-paint-brush',
+                    'children'  => [],
+                    'priority'  => 0,
+                ]
+            ]
+        ]
     ],
 
     'services' => [
-    'events' => [
-        'rebranding.assets.subscriber' => [
-            'class'     => \MauticPlugin\RebrandingBundle\EventListener\AssetsSubscriber::class,
-            'arguments' => [],
-            'tags'      => ['kernel.event_subscriber'],
+        'events' => [
+            'rebranding.assets.subscriber' => [
+                'class'     => \MauticPlugin\RebrandingBundle\EventListener\AssetsSubscriber::class,
+                'arguments' => [],
+                'tags'      => ['kernel.event_subscriber'],
             ],
         ],
     ],
-
 ];
