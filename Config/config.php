@@ -8,7 +8,7 @@ return [
     'icon'        => 'plugins/RebrandingBundle/Resources/images/icon.webp',
 
     'routes' => [
-        'main' => [
+        'public' => [
             'rebranding' => [
                 'path'       => '/s/rebranding',
                 'controller' => 'MauticPlugin\RebrandingBundle\Controller\SettingsController::viewAction',

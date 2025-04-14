@@ -1,7 +1,7 @@
 {
     "name": "riadims/mautic-rebranding-bundle",
     "type": "mautic-plugin",
-    "description": "A test plugin for customizing Mautic branding",
+    "description": "A plugin for customizing Mautic branding",
     "license": "MIT",
     "require": {
         "php": ">=7.4"

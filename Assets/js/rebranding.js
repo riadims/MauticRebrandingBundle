@@ -1,12 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     loadBrandingConfig();
-    
-    document.getElementById('revert-to-default')?.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (confirm('Are you sure you want to revert to default Mautic branding?')) {
-            window.location.href = '/s/rebranding/revert';
-        }
-    });
 });
 
 function loadBrandingConfig() {
@@ -25,57 +18,45 @@ function loadBrandingConfig() {
 }
 
 function applyBranding(config) {
-    // Remove any existing branding
     removeBranding();
     
-    // Hide default Mautic branding
     hideDefaultBranding();
     
-    // Apply new branding
     applyCustomBranding(config);
 
-    // Apply login branding
     applyLoginBranding(config);
     
-    // Apply color variables
     applyColorVariables(config);
     
-    // Add active class
     document.body.classList.add('rebranding-active');
 }
 
 function removeBranding() {
-    // Remove custom elements
     document.querySelectorAll('.rebranding-logo, .rebranding-text, .rebranding-login-logo').forEach(el => {
         if (el.parentNode) {
             el.parentNode.removeChild(el);
         }
     });
     
-    // Remove color variables
     const colorStyle = document.getElementById('rebranding-colors');
     if (colorStyle && colorStyle.parentNode) {
         colorStyle.parentNode.removeChild(colorStyle);
     }
     
-    // Remove active class
     document.body.classList.remove('rebranding-active');
     
-    // Show default elements
     document.querySelectorAll('.mautic-logo-figure, .mautic-logo-text, .mautic-logo').forEach(el => {
         el.style.display = '';
     });
 }
 
 function hideDefaultBranding() {
-    // Hide default elements
     document.querySelectorAll('.mautic-logo-figure, .mautic-logo-text').forEach(el => {
         el.style.display = 'none';
     });
 }
 
 function applyCustomBranding(config) {
-    // Apply header branding
     const mauticBrand = document.querySelector('.mautic-brand');
     if (mauticBrand) {
         if (config.logo) {
@@ -159,9 +140,15 @@ function applyColorVariables(config) {
         }
 
         #user_buttons_cancel_toolbar,
-        #user_buttons_cancel_toolbar i {
+        #user_buttons_cancel_toolbar i,
+         {
             background-color: var(--primary-color) !important;
             color: white !important;
+        }
+
+        .ri-arrow-down-s-line{
+        background-color: #ffffff00 !important;
+        color:white !important
         }
 
         #user_buttons_cancel_toolbar:hover,
@@ -209,3 +196,43 @@ function applyColorVariables(config) {
     `;
     document.head.appendChild(style);
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        Chart.helpers.each(Chart.instances, (chart) => {
+            chart.config.data.datasets.forEach(dataset => {
+                dataset.borderColor = '#000000';
+                dataset.backgroundColor = 'rgba(0,0,0,0.1)';
+            });
+
+            chart.options.tooltips = {
+                backgroundColor: '#000000',
+                titleFontColor: '#ffffff',
+                bodyFontColor: '#ffffff',
+                caretSize: 0,
+                borderColor: '#ffffff',
+                borderWidth: 1,
+                displayColors: false
+            };
+
+            chart.update();
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+            .chartjs-tooltip {
+                background: #000 !important;
+                border: 1px solid #fff !important;
+                color: #fff !important;
+                opacity: 100 !important;
+            }
+            
+            .chartjs-tooltip-header,
+            .chartjs-tooltip-body-item span {
+                color: #fff !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }, 250); //If timeout is shorter the charts wont have time to load and therefore wont change
+});
