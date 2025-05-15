@@ -34,7 +34,7 @@ return [
                     'id'        => 'rebranding_settings',
                     'route'     => 'rebranding',
                     'access'    => 'admin',
-                    'iconClass' => 'fa fa-paint-brush',
+                    'iconClass' => 'ri-brush-line',
                     'children'  => [],
                     'priority'  => 0,
                 ]
